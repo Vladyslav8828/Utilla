@@ -280,5 +280,8 @@
 		<Reference Include="Unity.RenderPipelines.Universal.Runtime">
 			<HintPath>$(GameAssemblyPath)\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
 		</Reference>
+  		<Reference Include="Unity.Collections">
+    		<HintPath>$(GameAssemblyPath)/Unity.Collections.dll</HintPath>
+  		</Reference>
 	</ItemGroup>
 </Project>

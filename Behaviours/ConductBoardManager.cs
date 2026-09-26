@@ -22,7 +22,7 @@ namespace Utilla.Behaviours;
 
 internal class ConductBoardManager : MonoBehaviour
 {
-    private int PageCount => boardContent.Count;
+    private int PageCount => /*4;*/boardContent.Count;
 
     private readonly List<Section> boardContent = [];
 
@@ -100,11 +100,26 @@ internal class ConductBoardManager : MonoBehaviour
 
         CreateConductButton(-1f, "-->", NextPage);
         CreateConductButton(1f, "<--", PrevPage);
+        CreateConductButton(0.4f, "ILLEGAL", IlegalButtonPage);
 
         ShowPage();
-        CheckVersion();
         CreateEntries();
     }
+
+    #region ILLEGAL BUTTON INFO
+    public void IlegalButtonPage()
+    {
+        currentPage = 3;
+        CreateConductButton(1f, "BACK", IlegalButtonPageBack);
+        DestroyConductButton("ILLEGAL");
+    }
+
+    public void IlegalButtonPageBack()
+    {
+        DestroyConductButton("BACK");
+    }
+
+    #endregion
 
     private void NextPage()
     {
@@ -144,7 +159,16 @@ internal class ConductBoardManager : MonoBehaviour
         }
     }
 
-    private void CreateConductButton(float horizontalPosition, string text, Action onButtonPressed = null)
+    public void DestroyConductButton(string text)
+    {
+        GameObject Button = GameObject.Find($"UtillaButton_{text}");
+        Button.Destroy();
+
+        GameObject textObject = GameObject.Find($"UtillaText_{text}");
+        textObject.Destroy();
+    }
+
+    public void CreateConductButton(float horizontalPosition, string text, Action onButtonPressed = null)
     {
         GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         buttonObject.name = $"UtillaButton_{text}";
@@ -157,6 +181,7 @@ internal class ConductBoardManager : MonoBehaviour
         buttonObject.SetLayer(UnityLayer.GorillaInteractable);
 
         GameObject textObject = new();
+        textObject.name = $"UtillaText_{text}";
         textObject.transform.parent = buttonObject.transform;
         textObject.transform.localPosition = Vector3.forward * 0.525f;
         textObject.transform.localRotation = Quaternion.AngleAxis(180f, Vector3.up);
@@ -183,205 +208,6 @@ internal class ConductBoardManager : MonoBehaviour
         }));
         onPressEvent.AddListener(new UnityAction(onButtonPressed));
         pressableButton.onPressButton = onPressEvent;
-    }
-
-    public async void CheckVersion()
-    {
-        string api = "https://api.github.com/repos/Seralyth/Utilla/releases/latest";
-        UnityWebRequest webRequest = UnityWebRequest.Get(api);
-
-        UnityWebRequestAsyncOperation asyncOperation = webRequest.SendWebRequest();
-        await asyncOperation;
-
-        if (webRequest.result != UnityWebRequest.Result.Success)
-        {
-            Logging.Fatal($"Version could not be accessed from {webRequest.url}");
-            Logging.Info(webRequest.error);
-            return;
-        }
-
-        try
-        {
-            JObject json = JObject.Parse(webRequest.downloadHandler.text);
-            string latestTag = json["tag_name"]?.ToString();
-
-            if (string.IsNullOrEmpty(latestTag))
-                return;
-
-            if (latestTag.StartsWith("v", StringComparison.OrdinalIgnoreCase))
-                latestTag = latestTag.Substring(1);
-
-            if (Version.TryParse(Constants.Version, out Version installedVersion) &&
-                Version.TryParse(latestTag, out Version latestVersion) &&
-                latestVersion > installedVersion)
-            {
-                Logging.Message($"A new version of Utilla is available: {latestVersion} (installed version: {installedVersion})");
-
-                footerText.color = Color.red;
-                footerText.fontSize *= 0.85f;
-                footerText.text = $"{Constants.Name} {Constants.Version} - please update to {latestVersion}".ToUpper();
-
-                PromptSeralythMenu($"From <b>Utilla</b>:\nA new version of Utilla is available ({latestVersion})! Would you like to update to the latest version?", Update);
-            }
-        }
-        catch (Exception e)
-        {
-            Logging.Fatal($"Failed to get latest version from GitHub: {e.Message}");
-        }
-    }
-
-    private void PromptSeralythMenu(string message, Action accept = null, Action decline = null, string acceptButton = "Yes", string declineButton = "No")
-    {
-        try
-        {
-            const string SeralythMenuGuid = "org.seralyth.gorillatag.seralythmenu";
-
-            if (!Chainloader.PluginInfos.TryGetValue(SeralythMenuGuid, out var pluginInfo) || pluginInfo?.Instance == null)
-            {
-                Logging.Warning("Seralyth Menu is not installed");
-                return;
-            }
-
-            var assembly = pluginInfo.Instance.GetType().Assembly;
-            MethodInfo promptMethod = null;
-
-            foreach (var type in assembly.GetTypes())
-            {
-                foreach (var method in type.GetMethods(BindingFlags.Public | BindingFlags.Static))
-                {
-                    Logging.Log(method.Name);
-                    if (method.Name == "Prompt")
-                    {
-                        promptMethod = method;
-                        break;
-                    }
-                }
-
-                if (promptMethod != null)
-                    break;
-            }
-
-            if (promptMethod != null)
-            {
-                promptMethod.Invoke(null,
-                [
-                    message,
-                    accept,
-                    decline,
-                    acceptButton,
-                    declineButton
-                ]);
-            }
-            else
-            {
-                Logging.Warning("Seralyth Menu does not have a Prompt method");
-            }
-        }
-        catch (Exception ex)
-        {
-            Logging.Error($"Failed to spawn prompt on Seralyth Menu: {ex}");
-        }
-    }
-
-    public static void Update()
-    {
-        switch (SystemInfo.operatingSystemFamily)
-        {
-            case OperatingSystemFamily.Windows:
-                {
-                    string updateScript = @"@echo off
-                    title Utilla Updater
-
-                    echo Utilla is updating, please wait...
-                    echo.
-
-                    set ""PLUGIN_PATH=BepInEx\plugins""
-
-                    for %%F in (""%PLUGIN_PATH%\*utilla*.dll"") do (
-                        set ""UTILLA_FILE=%%F""
-                        goto update
-                    )
-
-                    echo No update file found, skipping update.
-                    goto restart
-
-                    :update
-                    echo Downloading the latest release of Utilla...
-
-                    curl -L -o ""%UTILLA_FILE%"" ^
-                    ""https://github.com/Seralyth/Utilla/releases/latest/download/Utilla.dll""
-
-                    goto restart
-                      
-                    :restart
-
-                    :WAIT_LOOP
-                    tasklist /FI ""IMAGENAME eq Gorilla Tag.exe"" | find /I ""Gorilla Tag.exe"" >nul
-                    if %ERRORLEVEL%==0 (
-                        timeout /t 1 >nul
-                        goto WAIT_LOOP
-                    )
-
-                    echo Launching Gorilla Tag...
-                    start steam://run/1533390
-                    exit";
-
-                    string fileName = "UpdateScript.bat";
-
-                    File.WriteAllText(fileName, updateScript);
-
-                    string filePath = Assembly.GetExecutingAssembly().Location.Replace("\\", "/").Split("/BepInEx")[0] + "/" + fileName;
-                    Process.Start(filePath);
-                    Application.Quit();
-                    break;
-                }
-            case OperatingSystemFamily.Linux:
-                {
-                    string updateScript = @"#!/bin/bash
-                    clear
-                    echo ""Utilla is updating, please wait...""
-                    echo
-
-                    PLUGIN_PATH=""BepInEx/plugins""
-                    MENU_FILE=""""
-
-                    
-                    for f in ""$PLUGIN_PATH""/*utilla*.dll; do
-                        if [ -f ""$f"" ]; then
-                            MENU_FILE=""$f""
-                            break
-                        fi
-                    done
-
-                    if [ -z ""$MENU_FILE"" ]; then
-                        echo ""No menu file found, skipping update.""
-                    else
-                        echo ""Downloading latest release of Seralyth Menu...""
-                        curl -L -o ""$MENU_FILE"" \
-                        ""https://github.com/Seralyth/Utilla/releases/latest/download/Utilla.dll""
-                    fi
-
-                    while pgrep -f ""GorillaTag.exe"" > /dev/null; do
-                        sleep 1
-                    done
-
-                    echo ""Launching Gorilla Tag...""
-                    xdg-open ""steam://run/1533390""
-                    exit 0";
-
-                    string fileName = $"UpdateScript.sh";
-                    File.WriteAllText(fileName, updateScript);
-                    Process.Start("chmod", $"+x \"{fileName}\"");
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "/bin/bash",
-                        Arguments = $"\"{fileName}\"",
-                        UseShellExecute = false
-                    });
-                    Application.Quit();
-                    break;
-                }
-        }
     }
 
     private async void CreateEntries()

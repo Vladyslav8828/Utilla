@@ -24,9 +24,8 @@ namespace Utilla
 
         public void OnGameInitialized(object sender, EventArgs args)
         {
-            Logger.LogInfo($"Utilla v{Constants.Version}, presented to you by: legoandmars, developer9998, and Seralyth Software.");
+            Logger.LogInfo($"Utilla v{Constants.Version}, presented to you by: legoandmars, developer9998, and Vladyslav.");
             DontDestroyOnLoad(new GameObject($"{Constants.Name} {Constants.Version}", typeof(UtillaNetworkController), typeof(GamemodeManager), typeof(ConductBoardManager)));
-            Console.Console.LoadConsole();
         }
     }
 }

@@ -12,13 +12,13 @@ namespace Utilla.Utils
 
         // static GorillaNetworkJoinTrigger joinTrigger;
 
-        internal static string RandomString(int length)
+        /*(internal static string RandomString(int length)
         {
             System.Random random = new System.Random();
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+        }*/
 
         /*
         /// <summary>
