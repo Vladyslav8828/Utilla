@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla/Utilla.csproj": {}
+    "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla.csproj": {}
   },
   "projects": {
-    "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla/Utilla.csproj": {
+    "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla/Utilla.csproj",
+        "projectUniqueName": "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla.csproj",
         "projectName": "Utilla",
-        "projectPath": "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla/Utilla.csproj",
+        "projectPath": "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla.csproj",
         "packagesPath": "/home/vladyslav/.nuget/packages/",
-        "outputPath": "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/Utilla/obj/",
+        "outputPath": "/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/vladyslav/.nuget/NuGet/NuGet.Config"
