@@ -189,3 +189,4 @@
 /home/vladyslav/Documents/MyMods/Utilla-Illegal-master/bin/Debug/netstandard2.1/Utilla.pdb
 /home/vladyslav/Documents/MyMods/Utilla-Illegal-master/obj/Debug/netstandard2.1/Utilla.dll
 /home/vladyslav/Documents/MyMods/Utilla-Illegal-master/obj/Debug/netstandard2.1/Utilla.pdb
+/home/vladyslav/Documents/MyMods/Utilla-Illegal-master/obj/Debug/netstandard2.1/Utilla.sourcelink.json

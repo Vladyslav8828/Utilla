@@ -12,6 +12,6 @@
 
         public const string LegalStatusKey = "utilla_legal_status";
 
-        internal const string InfoRepositoryURL = "https://github.com/Vladyslav8828/Utilla/tree/master/Info";
+        internal const string InfoRepositoryURL = "https://raw.githubusercontent.com/Vladyslav8828/Utilla/master/Info";
     }
 }

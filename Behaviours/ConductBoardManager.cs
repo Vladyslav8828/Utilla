@@ -100,26 +100,10 @@ internal class ConductBoardManager : MonoBehaviour
 
         CreateConductButton(-1f, "-->", NextPage);
         CreateConductButton(1f, "<--", PrevPage);
-        CreateConductButton(0.4f, "ILLEGAL", IlegalButtonPage);
 
         ShowPage();
         CreateEntries();
     }
-
-    #region ILLEGAL BUTTON INFO
-    public void IlegalButtonPage()
-    {
-        currentPage = 3;
-        CreateConductButton(1f, "BACK", IlegalButtonPageBack);
-        DestroyConductButton("ILLEGAL");
-    }
-
-    public void IlegalButtonPageBack()
-    {
-        DestroyConductButton("BACK");
-    }
-
-    #endregion
 
     private void NextPage()
     {
