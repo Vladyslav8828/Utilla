@@ -185,6 +185,59 @@ namespace ExamplePlugin
 }
 ```
 
+### Buttons
+If you want you can now easly add buttons to the conduct board
+
+Example:
+```cs
+using Utilla;
+using UnityEngine;
+
+namespace Example
+{
+    public class Example : MonoBehaviour
+    {
+        public void Start()
+        {
+            Utilla.Behaviours.ConductBoardManager manager = FindAnyObjectByType<Utilla.Behaviours.ConductBoardManager>();
+
+            manager.CreateConductButton(0.5f, 0.52f, 0.13f, "Example", quit);
+
+            manager.CreateConductButton(0.5f, 0.52f, 0.13f, "Example 2", destroyOther);
+        }
+
+        public void destroyOther()
+        {
+            Utilla.Behaviours.ConductBoardManager manager = FindAnyObjectByType<Utilla.Behaviours.ConductBoardManager>();
+
+            manager.DestroyConductButton("Example");
+        }
+        public void quit()
+        {  
+            Application.Quit();
+        }
+    }
+}
+```
+How to create a button:
+```cs
+manager.CreateConductButton(
+    0.5f, //X position on the board
+    0.52f, //Y position on the board
+    0.13f, //Z position on the board
+    "Example", //the name/text of the button
+    quit //what it will do upon execution
+    );
+```
+How to destroy a button:
+```cs
+
+manager.DestroyConductButton(
+    "Example" //The exact name of the button
+    );
+```
+
+
 ### Manually joining private lobbies
 If you'd like to join custom private lobbies with your mod, Utilla implements methods for that too.
 ```cs
