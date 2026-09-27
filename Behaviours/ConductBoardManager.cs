@@ -20,7 +20,7 @@ using Utilla.Tools;
 
 namespace Utilla.Behaviours;
 
-internal class ConductBoardManager : MonoBehaviour
+public class ConductBoardManager : MonoBehaviour
 {
     private int PageCount => /*4;*/boardContent.Count;
 
@@ -98,8 +98,8 @@ internal class ConductBoardManager : MonoBehaviour
 
         boardContent.Insert(0, new());
 
-        CreateConductButton(-1f, "-->", NextPage);
-        CreateConductButton(1f, "<--", PrevPage);
+        CreateConductButton(-1f, 0.52f, 0.13f, "-->", NextPage);
+        CreateConductButton(1f, 0.52f, 0.13f, "<--", PrevPage);
 
         ShowPage();
         CreateEntries();
@@ -152,12 +152,12 @@ internal class ConductBoardManager : MonoBehaviour
         textObject.Destroy();
     }
 
-    public void CreateConductButton(float horizontalPosition, string text, Action onButtonPressed = null)
+    public void CreateConductButton(float horizontalPosition, float yPosition, float zPostion, string text, Action onButtonPressed = null)
     {
         GameObject buttonObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         buttonObject.name = $"UtillaButton_{text}";
         buttonObject.transform.parent = conductTransform;
-        buttonObject.transform.localPosition = new Vector3(horizontalPosition, 0.52f, 0.13f);
+        buttonObject.transform.localPosition = new Vector3(horizontalPosition, yPosition, zPostion); //0.52f, 0.13f
         buttonObject.transform.localRotation = Quaternion.Euler(353.5f, 0f, 0f);
         buttonObject.transform.localScale = new Vector3(0.1427168f, 0.1427168f, 0.1f);
         buttonObject.GetComponent<Renderer>().material = buttonTemplate.unpressedMaterial;

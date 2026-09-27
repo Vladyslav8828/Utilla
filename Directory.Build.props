@@ -5,6 +5,7 @@
 		<GameAssemblyPath>$(GamePath)\Gorilla Tag_Data\Managed</GameAssemblyPath>
 		<BepInExAssemblyPath>$(GamePath)\BepInEx\core</BepInExAssemblyPath>
 		<PluginsPath>$(GamePath)\BepInEx\plugins</PluginsPath>
+		<UtillaPath>$(PluginsPath)\Utilla</UtillaPath>
 		<AssemblyName>Utilla</AssemblyName>
 	</PropertyGroup>
 </Project>
