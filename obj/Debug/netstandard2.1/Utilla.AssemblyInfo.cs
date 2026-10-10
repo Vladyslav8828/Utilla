@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Utilla")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca1a6054c1f9c7c7beb4a779fbc5a890ef8200cc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+948debfc65e86d3c2c0597d36820d6231e9aa2b5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Utilla")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Utilla")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

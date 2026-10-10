@@ -12,8 +12,10 @@ namespace Utilla
     {
         public static new ManualLogSource Logger;
 
+        internal static Plugin Instance;
         public Plugin()
         {
+            Instance = this;
             Logger = base.Logger;
 
             DontDestroyOnLoad(this);
